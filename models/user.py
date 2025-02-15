@@ -2,6 +2,7 @@ import sqlite3
 from database import get_db_connection
 
 
+
 class User:
     def __init__(self, user_id, username):
         self.user_id = user_id
@@ -34,3 +35,29 @@ class User:
             return User(user[0], username)
         else:
             return None
+
+    @staticmethod
+    def delete(user_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
+        conn.commit()
+        conn.close()
+
+
+
+def update_avatar(user_id, avatar_path):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET avatar_path = ? WHERE user_id = ?", (avatar_path, user_id))
+    conn.commit()
+    conn.close()
+
+def get_avatar(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT avatar_path FROM users WHERE user_id = ?", (user_id,))
+    result = cursor.fetchone()
+    conn.close()
+    return result[0] if result else ''

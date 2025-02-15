@@ -1,0 +1,5 @@
+customtkinter~=5.2.2
+schedule~=1.2.2
+protobuf~=5.29.3
+tkcalendar~=1.6.1
+pillow~=11.1.0

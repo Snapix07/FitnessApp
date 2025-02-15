@@ -1,27 +1,31 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
 from models.user import User
 from ui.main_window import MainWindow
-from database import initialize_db
-initialize_db()
-
 
 class LoginWindow:
-    def __init__(self, root):
-        self.root = root
+    def __init__(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
+
+        self.root = ctk.CTk()
         self.root.title("Login - FitnessApp")
-        self.root.geometry("300x250")
+        self.root.geometry("400x300")
 
-        tk.Label(root, text="Username").pack()
-        self.username_entry = tk.Entry(root)
-        self.username_entry.pack()
+        ctk.CTkLabel(self.root, text="Login", font=("Arial", 20)).pack(pady=10)
 
-        tk.Label(root, text="Password").pack()
-        self.password_entry = tk.Entry(root, show="*")
-        self.password_entry.pack()
+        ctk.CTkLabel(self.root, text="Username:").pack()
+        self.username_entry = ctk.CTkEntry(self.root)
+        self.username_entry.pack(pady=5)
 
-        tk.Button(root, text="Login", command=self.login).pack()
-        tk.Button(root, text="Register", command=self.register).pack()
+        ctk.CTkLabel(self.root, text="Password:").pack()
+        self.password_entry = ctk.CTkEntry(self.root, show="*")
+        self.password_entry.pack(pady=5)
+
+        ctk.CTkButton(self.root, text="Login", command=self.login).pack(pady=10)
+        ctk.CTkButton(self.root, text="Back", command=self.go_back).pack(pady=5)
+
+        self.root.mainloop()
 
     def login(self):
         username = self.username_entry.get()
@@ -35,13 +39,10 @@ class LoginWindow:
         else:
             messagebox.showerror("Error", "Invalid username or password!")
 
-    def register(self):
-        username = self.username_entry.get()
-        password = self.password_entry.get()
-        result = User.register(username, password)
-        messagebox.showinfo("Registration", result)
+    def go_back(self):
+        self.root.destroy()
+        from ui.start_window import StartWindow
+        StartWindow()
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = LoginWindow(root)
-    root.mainloop()
+    LoginWindow()
